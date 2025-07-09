@@ -16,7 +16,6 @@ class ExtractDataFromPassport(TypedDict):
     sex: Annotated[str, ..., "The gender of the person, either \"M\" or \"F\""]
     nationality: Annotated[str, ..., "The nationality of the person. ISO 3166-1 Alpha-2"]
 
-
 class ExtractDataFromKTP(TypedDict):
     """Extract data from a passport document picture."""
     is_document: Annotated[bool, ..., "Whether the document is a KTP (Indonesian ID card) or not"]
@@ -28,7 +27,6 @@ class ExtractDataFromKTP(TypedDict):
     sex: Annotated[str, ..., "The gender of the person, either \"M\" or \"F\""]
     nationality: Annotated[str, ..., "The nationality of the person, either \"WNI\" or \"WNA\""]
 
-
 class ExtractDataFromIjazah(TypedDict):
     """Extract data from an High School Certificate document picture."""
     is_document: Annotated[bool, ..., "Whether the document is an Ijazah or not"]
@@ -37,10 +35,7 @@ class ExtractDataFromIjazah(TypedDict):
     date_of_birth: Annotated[str, ..., "The date of birth of the person in YYYY-MM-DD. ISO 8601"]
     place_of_birth: Annotated[str, ..., "The place of birth (CITY) of the person in UPPERCASE"]
 
-
-
 # ----------------- Prompt templates ------------------ 
-
 
 prompt_extract_data_from_ktp = """You are a helpful assistant that extracts information from images of documents.
 You will be given an image of a KTP, and your task is to extract the relevant information based on the document type provided.
@@ -135,12 +130,23 @@ def extract_data_from_base64_image(base64_image, document_type, prompt_type):
 
     extracted_data = structured_llm.invoke(
         [
-            {"role": "user", "content": prompt_type},
+            {
+                "role": "user",
+                "content": prompt_type
+            },
             {
                 "role": "user",
                 "content": [
-                    {"type": "text", "text": "I need you to analyze this image. Identify the orientation of the image. Think first then extract information in this image:"},
-                    {"type": "image_url", "image_url": {"url": f"data:image/png;base64,{base64_image}"}},
+                    {
+                        "type": "text",
+                        "text": "I need you to analyze this image. Identify the orientation of the image. Think first then extract information in this image:"
+                    },
+                    {
+                        "type": "image_url",
+                        "image_url": {
+                            "url": f"data:image/png;base64,{base64_image}"
+                        }
+                    },
                 ],
             }
         ]
