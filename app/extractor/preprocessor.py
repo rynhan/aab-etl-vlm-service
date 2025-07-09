@@ -18,6 +18,7 @@ def get_file_type_from_url(url: str) -> str:
     return 'unknown'
 
 def convert_image_url_to_base64_png(image_url):
+    # Download an image from a URL, upscale if any side < 800, convert to PNG, and return as a base64 string.
     response = requests.get(image_url)
     response.raise_for_status()
     img = Image.open(io.BytesIO(response.content)).convert('RGB')
@@ -33,17 +34,20 @@ def convert_image_url_to_base64_png(image_url):
     return [base64_str]
 
 def convert_pdf_url_to_base64_images(pdf_url):
+    # Step 1: Download PDF
     response = requests.get(pdf_url)
-    response.raise_for_status()
+    response.raise_for_status() # Raise exception if download failed
+    # Step 2: Convert PDF to images (list of PIL images, one per page)
     images = convert_from_bytes(response.content)
     base64_images = []
+    # Step 3: Encode each image to base64 with preprocessing
     for img in images:
         width, height = img.size
-        if width < 800 or height < 800:
+        if width < 800 or height < 800: # Resize if any side < 800
             new_size = (int(width * 2), int(height * 2))
             img = img.resize(new_size, Image.LANCZOS)
-        img = ImageEnhance.Contrast(img).enhance(1.5)
-        img = img.filter(ImageFilter.SHARPEN)
+        img = ImageEnhance.Contrast(img).enhance(1.5) # Increase contrast
+        img = img.filter(ImageFilter.SHARPEN) # Sharpen
         buf = io.BytesIO()
         img.save(buf, format='PNG')
         base64_str = base64.b64encode(buf.getvalue()).decode('utf-8')

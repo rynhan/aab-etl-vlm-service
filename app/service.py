@@ -61,9 +61,9 @@ def extract_document_data(url: str, doc_type: str) -> ExtractResponse:
         except Exception as e:
             return ExtractResponse(is_document=False, message=f"LLM extraction failed: {e}")
 
-        if extracted_data.get("is_document", False):
-            # Try auto-orientation
-            orientation = extracted_data.get("orientation", 0)
+        if extracted_data.get("is_document", False): # Check if the extracted data indicates a valid document was found. If "is_document" does not exist, it defaults to False.
+
+            orientation = extracted_data.get("orientation", 0) # Try auto-orientation
             max_attempts = 4
             attempts = 0
 
