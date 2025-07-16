@@ -105,6 +105,7 @@ docker compose up --build
 **Response (Example):**
 ```json
 {
+  "doc_type": "ktp",
   "is_document": true,
   "orientation": 0,
   "id_number": "3201xxxxxxxxxxxx",
