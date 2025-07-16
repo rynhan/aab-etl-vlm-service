@@ -20,6 +20,7 @@ class ExtractRequest(BaseModel):
 
 class ExtractResponse(BaseModel):
     # These fields cover KTP, Passport, and Ijazah scenarios
+    doc_type: Optional[str] = Field(..., description="Type of document extracted. Either 'ktp', 'passport', or 'ijazah'.") # This is to ensure the response is always clear about the document type.
     is_document: bool = Field(..., description="Whether the document matches the expected type.")
     orientation: Optional[int] = Field(None, description="Image rotation (degrees).")
     id_number: Optional[str] = Field(None, description="ID/Passport number if available.")

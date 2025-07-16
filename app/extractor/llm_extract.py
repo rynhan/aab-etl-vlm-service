@@ -7,6 +7,7 @@ from langchain_openai import ChatOpenAI
 
 class ExtractDataFromPassport(TypedDict):
     """Extract data from a passport document picture."""
+    doc_type: Annotated[str, ..., "The type of document extracted. Always 'passport' for this schema."]
     is_document: Annotated[bool, ..., "Whether the document is a passport or not"]
     orientation: Annotated[int, ..., "The orientation of the given image. Either [0, 90, 180, 270]"]
     id_number: Annotated[str, ..., "The passport ID number"]
@@ -18,6 +19,7 @@ class ExtractDataFromPassport(TypedDict):
 
 class ExtractDataFromKTP(TypedDict):
     """Extract data from a passport document picture."""
+    doc_type: Annotated[str, ..., "The type of document extracted. Always 'ktp' for this schema."]
     is_document: Annotated[bool, ..., "Whether the document is a KTP (Indonesian ID card) or not"]
     orientation: Annotated[int, ..., "Give me the orientation of the given image in clockwise. Either [0, 90, 180, 270]. Remember, KTP in 0 degree rotation, the position of head photo is always in the right side of the card. If the photo is in the bottom, it is 90 degree rotated. If the photo is on the left, it is 180 degree rotated. If the photo is on the top, it is 270 degree rotated. Use this as a reference to determine the orientation of the image."]
     id_number: Annotated[str, ..., "The KTP ID number (NIK) conisisting of 16 digits."]
@@ -29,6 +31,7 @@ class ExtractDataFromKTP(TypedDict):
 
 class ExtractDataFromIjazah(TypedDict):
     """Extract data from an High School Certificate document picture."""
+    doc_type: Annotated[str, ..., "The type of document extracted. Always 'ijazah' for this schema."]
     is_document: Annotated[bool, ..., "Whether the document is an Ijazah or not"]
     orientation: Annotated[int, ..., "Give me the orientation of the given image in clockwise. Either [0, 90, 180, 270]."]
     fullname: Annotated[str, ..., "The fullname of the person in UPPERCASE"]
